@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.1.125:3306/rtc?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=True&serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3306/rtc?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=True&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    timeout: 3000
+    port: 6379
+    database: 0
+
+server:
+  port: 7749
+  tomcat:
+    uri-encoding: utf-8
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+
+logging:
+  level:
+    com.rtc.cms: debug
+#  file:
+#    path: /Users/chenhang/work/log
+#    max-history: 90
+#    path: /work/log
+#  config: src/main/resources/config/logback.xml
+
+
+pagehelper:
+  #分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum<=0 时会查询第一页， pageNum>pages（超过总数时），会查询最后一页。默认false 时，直接根据参数进行查询。
+  helper-dialect: mysql
+  #Mapper传入pageNum,pageSize参数,不需要写额外SQL,service层调用时候传入即可
+  reasonable: true
+
+swagger:
+  enable: true
+
+rtc:
+  url: http://192.168.1.125
+  mail:
+    redisEmailLimt: 1000
+  portrait:
+    /Users/chenhang/work/portrait
+  #    实际保存位置
+  #    /home/work/portrait
+  #  对外暴露位置
+  portraitURI:
+    http://192.168.1.125/portrait
+  # 评论长度限制
+  commitLength:
+    1000
+  # 验证码过期时间(minutes)
+  verificationCodeTTL:
+    15
+  # 登录token过期时间(day)
+  loginTokenTTL:
+    30
+  comment-stars:
+    0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5
+  timezone:
+    -18, -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18

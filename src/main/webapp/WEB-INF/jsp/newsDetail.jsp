@@ -1,0 +1,273 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>ComCheck后台管理</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        .buttonclass {
+            margin-top: 10px;
+            margin-left: 15px;
+        }
+
+        .layui-btn-primary {
+            float: right;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">ComCheck后台管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <%--        <ul class="layui-nav layui-layout-left">--%>
+        <%--            <li class="layui-nav-item"><a href="">控制台1</a></li>--%>
+        <%--            <li class="layui-nav-item"><a href="">商品管理</a></li>--%>
+        <%--            <li class="layui-nav-item"><a href="">用户</a></li>--%>
+        <%--            <li class="layui-nav-item">--%>
+        <%--                <a href="javascript:;">其它系统</a>--%>
+        <%--                <dl class="layui-nav-child">--%>
+        <%--                    <dd><a href="">邮件管理</a></dd>--%>
+        <%--                    <dd><a href="">消息管理</a></dd>--%>
+        <%--                    <dd><a href="">授权管理</a></dd>--%>
+        <%--                </dl>--%>
+        <%--            </li>--%>
+        <%--        </ul>--%>
+        <%--        <ul class="layui-nav layui-layout-right">--%>
+        <%--            <li class="layui-nav-item">--%>
+        <%--                <a href="javascript:;">--%>
+        <%--                    喵喵--%>
+        <%--                </a>--%>
+        <%--                <dl class="layui-nav-child">--%>
+        <%--                    <dd><a href="">基本资料</a></dd>--%>
+        <%--                    <dd><a href="">安全设置</a></dd>--%>
+        <%--                </dl>--%>
+        <%--            </li>--%>
+        <%--            <li class="layui-nav-item"><a href="">退出</a></li>--%>
+        <%--        </ul>--%>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item"><a href="/news/initNews">新闻管理</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="buttonclass">
+            <button type="button" class="layui-btn examinate">审核</button>
+            <button type="button" class="layui-btn layui-btn-normal">编辑</button>
+            <button type="button" class="layui-btn layui-btn-primary">返回</button>
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>内容</th>
+                </tr>
+                </thead>
+                <tbody id="news-tbody">
+                <tr>
+                    <td>id</td>
+                    <td id="news-id">
+                </tr>
+                <tr>
+                    <td>examination</td>
+                    <td id="examination">
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td id="title">
+                </tr>
+                <tr>
+                    <td>author</td>
+                    <td id="author">
+                </tr>
+                <tr>
+                    <td>country</td>
+                    <td id="country">
+                </tr>
+                <tr>
+                    <td>source</td>
+                    <td id="source">
+                </tr>
+                <tr>
+                    <td>preview</td>
+                    <td id="preview">
+                </tr>
+                <tr>
+                    <td>description</td>
+                    <td id="description">
+                </tr>
+                <tr>
+                    <td>create_time</td>
+                    <td id="gmtCreate">
+                </tr>
+                <tr>
+                    <td>modified_time</td>
+                    <td id="gmtModify">
+                </tr>
+                <tr>
+                    <td>content</td>
+                    <td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © rtc
+    </div>
+</div>
+<body class="layui-layout-body">
+<script src="/layui/layui.js"></script>
+
+<script>
+    var newsId;
+
+    function request(strParame) {
+        var args = new Object();
+        var query = location.search.substring(1);
+
+        var pairs = query.split("&"); // Break at ampersand
+        for (var i = 0; i < pairs.length; i++) {
+            var pos = pairs[i].indexOf('=');
+            if (pos == -1) continue;
+            var argname = pairs[i].substring(0, pos);
+            var value = pairs[i].substring(pos + 1);
+            value = decodeURIComponent(value);
+            args[argname] = value;
+        }
+        return args[strParame];
+    }
+
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+        var $ = layui.$;
+        let id = request("id");
+        $.ajax({
+            url: '/news/getNews',
+            // data: {id: 734},
+            data: {id: id},
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                if (data.code == 200) {
+                    let news = data.data;
+                    newsId = news.id;
+                    $('#title').html("<p>" + news.title + "</p>")
+                    $('#news-id').html(news.id)
+                    if (news.examination == 0) {
+                        $('#examination').html('<span style = "color: #393d49;" > 未审核 </span>')
+                    } else if (news.examination == 1) {
+                        $('#examination').html('<span style = "color: #2fa7ff;" > 审核通过 </span>')
+                    } else if (news.examination == 2) {
+                        $('#examination').html('<span style = "color: #ff2f2f;" > 审核不通过 </span>')
+                    }
+                    $('#author').text(news.author)
+                    $('#country').text(news.country)
+                    $('#source').text(news.source)
+                    $('#preview').html('<a target="_blank" href="' + news.preview + '">' + news.preview + '</a>')
+                    $('#description').text(news.description)
+                    $('#gmtCreate').text(news.gmtCreate)
+                    $('#gmtModify').text(news.gmtModify)
+                    if (news.resultList != null && news.resultList.length > 0) {
+                        let resultList = news.resultList;
+                        for (let i = 0; i < resultList.length; i++) {
+                            let content = resultList[i]
+                            if (content.type == 'content') {
+                                $('#news-tbody').append('<tr><td></td><td>' + content.data + '</td>')
+                            } else if (content.type == 'img') {
+                                $('#news-tbody').append('<tr><td/><td><a target="_blank" href="' + content.url + '">' + content.url + '</a>' + '</td>')
+                            } else {
+                                $('#news-tbody').append('<tr><td>other style</td><td>' + content.data + '</td>')
+                            }
+                        }
+                    }
+                } else {
+                    alert('查看/编辑详情失败')
+                    window.location.href = "/news/initNews"
+                }
+            },
+            error: function (data) {
+                alert('请求失败')
+                window.location.href = "/news/initNews"
+            }
+        })
+
+
+        $('.examinate').click(function () {
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                layer.confirm('审核文章id：' + newsId, {icon: 3, title: '提示', btn: ['通过', '不通过', '取消']},
+                    function (index) {
+                        let operation = {
+                            id: [newsId],
+                            operation: 'approve'
+                        };
+                        //向服务端发送删除指令
+                        $.ajax({
+                            url: '/news/examinateNews',
+                            data: JSON.stringify(operation),
+                            type: 'POST',
+                            contentType: 'application/json',
+                            success: function () {
+                                window.location.href = "/news/toNewsDetail?id=" + newsId;
+                            },
+                            error: function () {
+
+                            }
+                        })
+
+                    },
+                    function (index) {
+                        let operation = {
+                            id: [newsId],
+                            operation: 'disapprove'
+                        };
+                        $.ajax({
+                            url: '/news/examinateNews',
+                            data: JSON.stringify(operation),
+                            type: 'POST',
+                            contentType: 'application/json',
+                            success: function () {
+                                window.location.href = "/news/toNewsDetail?id=" + newsId;
+                            },
+                            error: function () {
+
+                            }
+                        })
+                    });
+            });
+        });
+
+
+        $('.layui-btn-normal').click(function () {
+            window.location.href = "/news/toNewsEdit?id=" + newsId;
+        });
+
+        $('.layui-btn-primary').click(function () {
+            window.location.href = "/news/initNews"
+        });
+    })
+    ;
+</script>
+
+</body>
+</html>
