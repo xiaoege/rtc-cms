@@ -34,4 +34,11 @@ public interface NewsService {
      * @return
      */
     ResultData getNews(int id);
+
+    /**
+     * 修改新闻
+     * @param body
+     * @return
+     */
+    ResultData modifyNews(String body);
 }

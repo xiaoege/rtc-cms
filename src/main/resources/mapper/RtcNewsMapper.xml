@@ -129,12 +129,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.rtc.cms.entity.news.RtcNews">
+  <update id="updateByPrimaryKeySelective" parameterType="com.rtc.cms.dto.RtcNewsDTO">
     update rtc_news
     <set>
-      <if test="uuid != null">
-        uuid = #{uuid,jdbcType=VARCHAR},
-      </if>
       <if test="author != null">
         author = #{author,jdbcType=VARCHAR},
       </if>
@@ -147,26 +144,8 @@
       <if test="country != null">
         country = #{country,jdbcType=VARCHAR},
       </if>
-      <if test="preview != null">
-        preview = #{preview,jdbcType=VARCHAR},
-      </if>
-      <if test="sequence != null">
-        sequence = #{sequence,jdbcType=INTEGER},
-      </if>
-      <if test="gmtCreate != null">
-        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModify != null">
-        gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="examination != null">
-        examination = #{examination,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -270,5 +249,25 @@
     WHERE
         rtc_news.id = #{id,jdbcType=INTEGER}
         and rtc_news.status = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+        and rtc_news_detail.status = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
   </select>
+
+  <select id="selectUuid" resultType="java.lang.String">
+    select
+        uuid
+    from
+        rtc_news
+    where
+        rtc_news.id = #{id,jdbcType=INTEGER}
+        and rtc_news.status = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+  </select>
+
+  <update id="deleteNewsDetail" parameterType="java.lang.String">
+    update
+        rtc_news_detail
+    set
+        rtc_news_detail.status = ${@com.rtc.cms.util.CommonConst@STATUS_NOT_USED}
+    where
+        rtc_news_detail.news_id = #{uuid,jdbcType=VARCHAR}
+  </update>
 </mapper>

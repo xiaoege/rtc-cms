@@ -79,4 +79,15 @@ public class NewsController {
     public ResultData removeNews(@RequestParam int id) {
         return newsService.removeNews(id);
     }
+
+    /**
+     * 修改新闻
+     * @param body
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("modifyNews")
+    public ResultData modifyNews(@RequestBody String body) {
+        return newsService.modifyNews(body);
+    }
 }

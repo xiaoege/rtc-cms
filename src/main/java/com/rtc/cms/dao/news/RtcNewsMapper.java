@@ -1,6 +1,7 @@
 package com.rtc.cms.dao.news;
 
 import com.rtc.cms.dto.NewsOperation;
+import com.rtc.cms.dto.RtcNewsDTO;
 import com.rtc.cms.entity.news.RtcNews;
 import com.rtc.cms.vo.NewsDetailVO;
 
@@ -15,7 +16,7 @@ public interface RtcNewsMapper {
 
     RtcNews selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(RtcNews record);
+    int updateByPrimaryKeySelective(RtcNewsDTO rtcNewsDTO);
 
     int updateByPrimaryKeyWithBLOBs(RtcNews record);
 
@@ -30,4 +31,8 @@ public interface RtcNewsMapper {
     int deleteNews(int id);
 
     NewsDetailVO selectNews(int id);
+
+    String selectUuid(int id);
+
+    int deleteNewsDetail(String uuid);
 }

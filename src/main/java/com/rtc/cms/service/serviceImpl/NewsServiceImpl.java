@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.rtc.cms.dao.news.RtcNewsDetailMapper;
 import com.rtc.cms.dao.news.RtcNewsMapper;
 import com.rtc.cms.dto.NewsOperation;
+import com.rtc.cms.dto.RtcNewsDTO;
 import com.rtc.cms.entity.news.RtcNews;
 import com.rtc.cms.service.NewsService;
 import com.rtc.cms.vo.NewsDetailVO;
@@ -36,6 +38,9 @@ import java.util.Map;
 public class NewsServiceImpl implements NewsService {
     @Autowired
     private RtcNewsMapper rtcNewsMapper;
+
+    @Autowired
+    private RtcNewsDetailMapper rtcNewsDetailMapper;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -136,28 +141,44 @@ public class NewsServiceImpl implements NewsService {
                     String content = rtcNewsDetailVO.getContent();
                     content = content.replaceAll("<(?!img|figcaption|/figcaption|strong|/strong|em|/em|p|/p).*?>", "");
                     String[] split = content.split("</p>");
-                    for (int j = 0; j < split.length - 1; j++) {
+                    for (int j = 0; j < split.length; j++) {
                         String p = split[j];
-                        p = p.substring(p.indexOf("<p>") + 3).replace("\\n", "");
+                        if (p.contains("<p")) {
+                            p = p.substring(p.indexOf("<p>") + 3).replace("\\n", "");
+                        }
                         Map map = new HashMap();
+                        String url = "";
                         if (p.contains("figcaption") || p.contains("<img")) {
-                            String url = p.substring(p.indexOf("'") + 1, p.indexOf("'", p.indexOf("'") + 1));
-    //                        "http://192.168.1.125/chinadaily/2020-07/14/1594717677-8073.jpeg"
+                            url = p.substring(p.indexOf("'") + 1, p.indexOf("'", p.indexOf("'") + 1));
+                            //                        "http://192.168.1.125/chinadaily/2020-07/14/1594717677-8073.jpeg"
                             if (null != url && url.length() > 12) {
                                 url = this.url + url.substring(12);
-                                File picture = new File(url);
-    //                        BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
-                                BufferedImage sourceImg = ImageIO.read(new URL(url).openStream());
-                                // 单位：像素
-                                int width = sourceImg.getWidth();
-                                int height = sourceImg.getHeight();
-                                map.put("data", p.replaceAll("<[^>]*>", ""));
-                                map.put("type", "img");
-                                map.put("url", url);
-                                map.put("width", width);
-                                map.put("height", height);
-                                resultList.add(map);
                             }
+//                            File picture = new File(url);
+                            //                        BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
+                            BufferedImage sourceImg = ImageIO.read(new URL(url).openStream());
+                            // 单位：像素
+                            int width = sourceImg.getWidth();
+                            int height = sourceImg.getHeight();
+                            map.put("data", p.replaceAll("<[^>]*>", ""));
+                            map.put("type", "img");
+                            map.put("url", url);
+                            map.put("width", width);
+                            map.put("height", height);
+                            resultList.add(map);
+                        } else if (p.startsWith(this.url)) {
+//                            File picture = new File(p);
+                            //                        BufferedImage sourceImg = ImageIO.read(new FileInputStream(picture));
+                            BufferedImage sourceImg = ImageIO.read(new URL(p).openStream());
+                            // 单位：像素
+                            int width = sourceImg.getWidth();
+                            int height = sourceImg.getHeight();
+                            map.put("data", p.replaceAll("<[^>]*>", ""));
+                            map.put("type", "img");
+                            map.put("url", p);
+                            map.put("width", width);
+                            map.put("height", height);
+                            resultList.add(map);
                         } else if (p.contains("<strong>")) {
                             map.put("data", p.replaceAll("<[^>]*>", ""));
                             map.put("type", "title");
@@ -180,5 +201,38 @@ public class NewsServiceImpl implements NewsService {
         }
 
         return ResultData.success(vo);
+    }
+
+    /**
+     * 修改新闻
+     *
+     * @param body
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ResultData modifyNews(String body) {
+        try {
+            RtcNewsDTO dto = objectMapper.readValue(body, RtcNewsDTO.class);
+            rtcNewsMapper.updateByPrimaryKeySelective(dto);
+            String uuid = rtcNewsMapper.selectUuid(dto.getId());
+            rtcNewsMapper.deleteNewsDetail(uuid);
+            ArrayList<String> contentList = dto.getContent();
+            if (!ObjectUtils.isEmpty(contentList)) {
+                for (int i = 0; i < contentList.size(); i++) {
+                    String content = contentList.get(i);
+                    if (!content.startsWith("<p>")) {
+                        content = "<p>" + content + "</P>";
+                        contentList.set(i, content);
+                    }
+                }
+                rtcNewsDetailMapper.insertNewsContent(uuid, contentList);
+
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return ResultData.fail();
+        }
+        return null;
     }
 }

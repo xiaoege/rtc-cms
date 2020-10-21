@@ -7,38 +7,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>ComCheck后台管理</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        .buttonclass {
+            margin-top: 10px;
+            margin-left: 15px;
+            margin-bottom: 15px;
+        }
+
+        .layui-btn-primary {
+            float: right;
+            margin-right: 20px;
+        }
+    </style>
 </head>
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-logo">ComCheck后台管理</div>
+    <div class="layui-header">
+        <div class="layui-logo">ComCheck后台管理</div>
+    </div>
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a href="">新闻管理</a></li>
+                <li class="layui-nav-item"><a href="/news/initNews">新闻管理</a></li>
             </ul>
         </div>
     </div>
 
-    <script type="text/html" id="toolhead">
-        <div class="layui-btn-container">
-            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">审核</button>
-            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-        </div>
-    </script>
-
-    <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <%--        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="examination">审核</a>--%>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
-
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div style="padding: 15px;">
-            <table class="layui-hide" id="test" lay-filter="test1"></table>
+        <div class="buttonclass">
+            <button type="button" class="layui-btn examinate">审核</button>
+            <button type="button" class="layui-btn layui-btn-normal">保存修改</button>
+            <button type="button" class="layui-btn layui-btn-primary">返回</button>
         </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="150">
+                    <col>
+                </colgroup>
+                <tr>
+                    <td>examination</td>
+                    <td id="examination"></td>
+                </tr>
+            </table>
+            <div class="layui-form-item">
+                <label class="layui-form-label">id</label>
+                <div class="layui-input-block">
+                    <input id="news-id" type="text" autocomplete="off"
+                           class="layui-input" disabled="disabled">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">title</label>
+                <div class="layui-input-block">
+                    <input id="title" type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">author</label>
+                <div class="layui-input-block">
+                    <input id="author" type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">country</label>
+                <div class="layui-input-block">
+                    <input id="country" type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">source</label>
+                <div class="layui-input-block">
+                    <input id="source" type="text" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">preview</label>
+                <div class="layui-input-block">
+                    <input id="preview" type="text" class="layui-input" disabled="disabled">
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">description</label>
+                <div class="layui-input-block">
+                    <textarea id="description" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">create_time</label>
+                <div class="layui-input-block">
+                    <input id="create_time" type="text" autocomplete="off" class="layui-input" disabled="disabled">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">modified_time</label>
+                <div class="layui-input-block">
+                    <input id="modified_time" type="text" autocomplete="off" class="layui-input" disabled="disabled">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">content</label>
+                <div class="layui-input-block" id="news-content">
 
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="layui-footer">
@@ -50,138 +124,130 @@
 <script src="/layui/layui.js"></script>
 
 <script>
-    var newsArray = [];
+    var newsId;
+
+    function request(strParame) {
+        var args = new Object();
+        var query = location.search.substring(1);
+
+        var pairs = query.split("&"); // Break at ampersand
+        for (var i = 0; i < pairs.length; i++) {
+            var pos = pairs[i].indexOf('=');
+            if (pos == -1) continue;
+            var argname = pairs[i].substring(0, pos);
+            var value = pairs[i].substring(pos + 1);
+            value = decodeURIComponent(value);
+            args[argname] = value;
+        }
+        return args[strParame];
+    }
+
     //JavaScript代码区域
     layui.use('element', function () {
         var element = layui.element;
         var $ = layui.$;
-    });
+        let id = request("id");
+        $.ajax({
+            url: '/news/getNews',
+            data: {id: id},
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                if (data.code == 200) {
+                    let news = data.data;
+                    newsId = news.id;
 
-    layui.use('table', function () {
-        var table = layui.table;
-        var $ = layui.$;
-        table.render({
-            elem: '#test'
-            , url: "/news/listNews"
-            , limit: 20
-            , limits: [20, 30, 40, 50]
-            , toolbar: '#toolhead' //开启头部工具栏，并为其绑定左侧模板
-            , cols: [[
-                {type: 'checkbox', fixed: 'left'}
-                , {field: 'id', title: 'ID', width: 100}
-                , {field: 'title', title: '标题'}
-                , {field: 'source', title: '新闻来源', width: 120}
-                , {field: 'country', title: '国家'}
-                , {field: 'examination', title: '审核状态', width: 100, templet: '#examination'}
-                , {field: 'gmtCreate', title: '创建时间', width: 170}
-                , {field: 'gmtModify', title: '修改时间', width: 170}
-                , {field: 'operation', title: '操作', toolbar: '#barDemo'}
-            ]]
-            // , data: newsArray
-            , page: true
-        });
+                    if (news.examination == 0) {
+                        $('#examination').html('<span style = "color: #393d49;" > 未审核 </span>')
+                    } else if (news.examination == 1) {
+                        $('#examination').html('<span style = "color: #2fa7ff;" > 审核通过 </span>')
+                    } else if (news.examination == 2) {
+                        $('#examination').html('<span style = "color: #ff2f2f;" > 审核不通过 </span>')
+                    }
 
-        //头工具栏事件
-        table.on('toolbar(test1)', function (obj) {
-            let checkStatus = table.checkStatus(obj.config.id);
-            let data = checkStatus.data;
-            switch (obj.event) {
-                case 'getCheckData':
-                    let idArray = [];
-                    for (let i = 0; i < data.length; i++) {
-                        idArray.push(data[i].id)
+                    $("#news-id").val(news.id)
+                    $("#title").val(news.title)
+                    $('#author').val(news.author)
+                    $('#country').val(news.country)
+                    $('#source').val(news.source)
+                    $('#preview').val(news.preview)
+                    $('#description').val(news.description)
+                    $('#create_time').val(news.gmtCreate)
+                    $('#modified_time').val(news.gmtModify)
+                    if (news.resultList != null && news.resultList.length > 0) {
+                        let resultList = news.resultList;
+                        for (let i = 0; i < resultList.length; i++) {
+                            let content = resultList[i]
+                            if (content.type == 'content') {
+                                $('#news-content').append('<textarea type="text" autocomplete="off" class="layui-textarea news-content">' + content.data + '</textarea>')
+                            } else if (content.type == 'img') {
+                                $('#news-content').append('<input type="text" disabled="disabled" class="layui-input news-content" value="' + content.url + '">')
+                            } else {
+                                $('#news-content').append('<textarea type="text" autocomplete="off" class="layui-textarea news-content">' + content.data + '</textarea>')
+                            }
+                        }
                     }
-                    if (idArray.length != 0) {
-                        layer.confirm('审核' + idArray.length + '个新闻', {icon: 3, title: '审核', btn: ['通过', '不通过', '取消']},
-                            function (index) {
-                                let operation = {
-                                    id: idArray,
-                                    operation: 'approve'
-                                };
-                                // layer.close(index);
-                                //向服务端发送删除指令
-                                $.ajax({
-                                    url: '/news/examinateNews',
-                                    data: JSON.stringify(operation),
-                                    type: 'POST',
-                                    contentType: 'application/json',
-                                    success: function () {
-                                        table.reload('test', {
-                                            url: "/news/listNews"
-                                            , where: {} //设定异步数据接口的额外参数
-                                            //,height: 300
-                                        });
-                                        layer.close(index);
-                                    },
-                                    error: function () {
-                                        layer.msg('请求失败')
-                                        layer.close(index);
-                                    }
-                                })
-                            },
-                            function (index) {
-                                let operation = {
-                                    id: idArray,
-                                    operation: 'disapprove'
-                                };
-                                $.ajax({
-                                    url: '/news/examinateNews',
-                                    data: JSON.stringify(operation),
-                                    type: 'POST',
-                                    contentType: 'application/json',
-                                    success: function () {
-                                        table.reload('test', {
-                                            url: "/news/listNews"
-                                            , where: {} //设定异步数据接口的额外参数
-                                            //,height: 300
-                                        });
-                                        layer.close(index);
-                                    },
-                                    error: function () {
-                                        layer.msg('请求失败')
-                                        layer.close(index);
-                                    }
-                                })
-                            });
-                    }
-                    break;
-                case 'getCheckLength':
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
+                } else {
+                    alert('查看/编辑详情失败')
+                    window.location.href = "/news/initNews"
+                }
+            },
+            error: function (data) {
+                alert('请求失败')
+                window.location.href = "/news/initNews"
             }
-            ;
+        })
+
+        $('.layui-btn-normal').click(function () {
+            if (confirm('确认保存?')) {
+                let content = []
+                $('.news-content').each(function () {
+                    content.push($(this).val())
+                })
+                let body = {
+                    id: $("#news-id").val(),
+                    title: $("#title").val(),
+                    author: $('#author').val(),
+                    country: $('#country').val(),
+                    source: $('#source').val(),
+                    preview: $('#preview').val(),
+                    description: $('#description').val(),
+                    content: content
+                }
+                $.ajax({
+                    url: '/news/modifyNews',
+                    // data: {body: JSON.stringify(body)},
+                    data: JSON.stringify(body),
+                    type: 'POST',
+                    contentType: 'application/json',
+                    success: function (data) {
+
+                    },
+                    error: function (data) {
+
+                    }
+                })
+            }
         });
 
-        //监听行工具事件
-        table.on('tool(test1)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            let data = obj.data //获得当前行数据
-                , layEvent = obj.event; //获得 lay-event 对应的值
-            if (layEvent === 'detail') {
-                window.location.href = "/news/toNewsDetail?id=" + obj.data.id;
-            } else if (layEvent === 'edit') {
-                window.location.href = "/news/toNewsDetail?id=" + obj.data.id;
-            } else if (layEvent === 'examination') {
-                layer.confirm('审核文章id：' + obj.data.id, {icon: 3, title: '提示', btn: ['通过', '不通过', '取消']},
+        $('.examinate').click(function () {
+            layui.use('layer', function () {
+                var layer = layui.layer;
+                layer.confirm('审核文章id：' + newsId, {icon: 3, title: '提示', btn: ['通过', '不通过', '取消']},
                     function (index) {
-                        obj.del(); //删除对应行（tr）的DOM结构
-                        let data = obj.data;
                         let operation = {
-                            id: data.id,
+                            id: [newsId],
                             operation: 'approve'
                         };
-                        // layer.close(index);
+                        //向服务端发送删除指令
                         $.ajax({
                             url: '/news/examinateNews',
                             data: JSON.stringify(operation),
                             type: 'POST',
                             contentType: 'application/json',
                             success: function () {
-                                table.reload('test', {
-                                    url: "/news/listNews"
-                                    , where: {} //设定异步数据接口的额外参数
-                                    //,height: 300
-                                });
-                                layer.close(index);
+                                window.location.href = "/news/toNewsEdit?id=" + newsId;
                             },
                             error: function () {
 
@@ -190,10 +256,8 @@
 
                     },
                     function (index) {
-                        // layer.close(index);
-                        let data = obj.data;
                         let operation = {
-                            id: data.id,
+                            id: [newsId],
                             operation: 'disapprove'
                         };
                         $.ajax({
@@ -202,49 +266,23 @@
                             type: 'POST',
                             contentType: 'application/json',
                             success: function () {
-
+                                window.location.href = "/news/toNewsEdit?id=" + newsId;
                             },
                             error: function () {
 
                             }
                         })
                     });
-            } else if (layEvent === 'del') {
-                layer.confirm('删除文章id: ' + obj.data.id, {icon: 2}, function (index) {
-                    obj.del(); //删除对应行（tr）的DOM结构
-                    layer.close(index);
-                    //向服务端发送删除指令
-                    $.ajax({
-                        url: '/news/removeNews',
-                        data: {id: obj.data.id},
-                        type: 'POST',
-                        success: function () {
-                            if (data.code == 200) {
-                                layui.msg('删除成功');
-                            } else {
-                                layui.msg('删除失败')
-                            }
-                        },
-                        error: function () {
-                            layui.msg('请求失败')
-                        }
-                    })
-                });
-            }
+            });
+        });
+
+        $('.layui-btn-primary').click(function () {
+            window.location.href = "/news/initNews"
         });
     });
 
 
 </script>
 
-<script type="text/html" id="examination">
-    {{#  if(d.examination == 0){ }}
-    <span style="color: #393d49;">未审核</span>
-    {{#  } else if(d.examination == 1){ }}
-    <span style="color: #2fa7ff;">审核通过</span>
-    {{#  } else if(d.examination == 2){ }}
-    <span style="color: #ff2f2f;">审核不通过</span>
-    {{#  } }}
-</script>
 </body>
 </html>

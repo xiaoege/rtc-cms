@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
     <div class="layui-logo">ComCheck后台管理</div>
+    </div>
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a href="">新闻管理</a></li>
+                <li class="layui-nav-item"><a href="/news/initNews">新闻管理</a></li>
             </ul>
         </div>
     </div>
@@ -50,7 +52,6 @@
 <script src="/layui/layui.js"></script>
 
 <script>
-    var newsArray = [];
     //JavaScript代码区域
     layui.use('element', function () {
         var element = layui.element;
@@ -77,7 +78,6 @@
                 , {field: 'gmtModify', title: '修改时间', width: 170}
                 , {field: 'operation', title: '操作', toolbar: '#barDemo'}
             ]]
-            // , data: newsArray
             , page: true
         });
 

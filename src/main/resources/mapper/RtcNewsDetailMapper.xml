@@ -165,4 +165,10 @@
       content = #{content,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="insertNewsContent" parameterType="java.lang.String">
+    insert into rtc_news_detail (news_id, content) values
+    <foreach collection="contentList" item="i" separator=",">
+      (#{newsId}, #{i})
+    </foreach>
+  </insert>
 </mapper>

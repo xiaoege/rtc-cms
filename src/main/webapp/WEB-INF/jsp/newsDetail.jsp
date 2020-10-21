@@ -162,7 +162,6 @@
         let id = request("id");
         $.ajax({
             url: '/news/getNews',
-            // data: {id: 734},
             data: {id: id},
             type: 'GET',
             dataType: 'json',
