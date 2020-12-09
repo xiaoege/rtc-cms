@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
+        <spring-security.version>5.3.4.RELEASE</spring-security.version>
     </properties>
 
     <dependencies>
@@ -100,10 +101,10 @@
             <version>2.9.2</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber -->
         <dependency>
@@ -119,11 +120,11 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.security.oauth/spring-security-oauth2 -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security.oauth</groupId>-->
-<!--            <artifactId>spring-security-oauth2</artifactId>-->
-<!--            <version>2.5.0.RELEASE</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.5.0.RELEASE</version>
+        </dependency>
 
         <!-- servlet依赖 -->
         <dependency>
@@ -139,6 +140,14 @@
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

@@ -141,7 +141,11 @@ public class NewsServiceImpl implements NewsService {
                     String content = rtcNewsDetailVO.getContent();
                     content = content.replaceAll("<(?!img|figcaption|/figcaption|strong|/strong|em|/em|p|/p).*?>", "");
                     String[] split = content.split("</p>");
-                    for (int j = 0; j < split.length; j++) {
+                    int contentLength = split.length;
+                    if (split != null && contentLength != 1) {
+                        contentLength -= 1;
+                    }
+                    for (int j = 0; j < contentLength; j++) {
                         String p = split[j];
                         if (p.contains("<p")) {
                             p = p.substring(p.indexOf("<p>") + 3).replace("\\n", "");

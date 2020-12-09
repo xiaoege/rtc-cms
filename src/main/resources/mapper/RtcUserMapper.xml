@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rtc.cms.dao.rtc.RtcUserMapper">
+  <resultMap id="BaseResultMap" type="com.rtc.cms.entity.rtc.RtcUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="country_code" jdbcType="VARCHAR" property="countryCode" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="synopsis" jdbcType="VARCHAR" property="synopsis" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="enterprise" jdbcType="VARCHAR" property="enterprise" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, nickname, password, phone, country_code, email, salt, role_id, synopsis, country, 
+    enterprise, address, gmt_create, gmt_modified, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rtc_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rtc_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rtc.cms.entity.rtc.RtcUser">
+    insert into rtc_user (id, nickname, password, 
+      phone, country_code, email, 
+      salt, role_id, synopsis, 
+      country, enterprise, address, 
+      gmt_create, gmt_modified, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{countryCode,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{synopsis,jdbcType=VARCHAR}, 
+      #{country,jdbcType=VARCHAR}, #{enterprise,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.rtc.cms.entity.rtc.RtcUser">
+    insert into rtc_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uuid != null">
+        uuid,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="countryCode != null">
+        country_code,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="synopsis != null">
+        synopsis,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="enterprise != null">
+        enterprise,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="countryCode != null">
+        #{countryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="synopsis != null">
+        #{synopsis,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="enterprise != null">
+        #{enterprise,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rtc.cms.entity.rtc.RtcUser">
+    update rtc_user
+    <set>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="countryCode != null">
+        country_code = #{countryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="synopsis != null">
+        synopsis = #{synopsis,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="enterprise != null">
+        enterprise = #{enterprise,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null">
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="portrait != null">
+          portrait = #{portrait,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rtc.cms.entity.rtc.RtcUser">
+    update rtc_user
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      country_code = #{countryCode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=INTEGER},
+      synopsis = #{synopsis,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      enterprise = #{enterprise,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkEmaillRegistered" resultType="java.lang.Integer">
+    select id from rtc_user where email = #{email, jdbcType=INTEGER} and status = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+  </select>
+
+  <select id="checkPhoneRegistered" resultType="java.lang.Integer">
+    select id from rtc_user where phone = #{email, jdbcType=INTEGER} and status = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+  </select>
+
+  <select id="selectByPhoneOrAccount" resultType="com.rtc.cms.dao.rtc.RtcUserDTO">
+        SELECT
+            rtc_user.id,
+            rtc_user.`password`,
+            rtc_user_role.role_name AS roleName,
+            rtc_user.uuid,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email
+        FROM
+            rtc_user
+            LEFT JOIN rtc_user_role ON rtc_user.role_id = rtc_user_role.id
+        WHERE
+            rtc_user.uuid = #{uuid,jdbcType=VARCHAR}
+            AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+        UNION
+        SELECT
+            rtc_user.id,
+            rtc_user.`password`,
+            rtc_user_role.role_name AS roleName,
+            rtc_user.uuid,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email
+        FROM
+            rtc_user
+            LEFT JOIN rtc_user_role ON rtc_user.role_id = rtc_user_role.id
+        WHERE
+            rtc_user.nickname = #{uuid,jdbcType=VARCHAR}
+            AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+        UNION
+        SELECT
+            rtc_user.id,
+            rtc_user.`password`,
+            rtc_user_role.role_name AS roleName,
+            rtc_user.uuid,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email
+        FROM
+            rtc_user
+            LEFT JOIN rtc_user_role ON rtc_user.role_id = rtc_user_role.id
+        WHERE
+            rtc_user.phone = #{uuid,jdbcType=VARCHAR}
+            AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+        UNION
+        SELECT
+            rtc_user.id,
+            rtc_user.`password`,
+            rtc_user_role.role_name AS roleName,
+            rtc_user.uuid,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email
+        FROM
+            rtc_user
+                LEFT JOIN rtc_user_role ON rtc_user.role_id = rtc_user_role.id
+        WHERE
+            rtc_user.email = #{uuid,jdbcType=VARCHAR}
+          AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+  </select>
+
+  <select id="checkNicknameRegistered" resultType="java.lang.String">
+    select
+        nickname
+    from
+        rtc_user
+    where
+        rtc_user.nickname = #{nickname, jdbcType=VARCHAR}
+        AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+  </select>
+
+  <select id="selectByPhoneOrAccount2RtcUserVO" resultType="com.rtc.cms.vo.RtcUserVO">
+        SELECT
+            rtc_user.id,
+            rtc_user.nickname,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email,
+            rtc_user.synopsis,
+            rtc_user.country,
+            rtc_user.enterprise,
+            rtc_user.address,
+            rtc_user.uuid,
+            rtc_user.portrait
+        FROM
+            rtc_user
+        WHERE
+            rtc_user.phone = #{account, jdbcType=VARCHAR}
+            AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+        UNION
+        SELECT
+            rtc_user.id,
+            rtc_user.nickname,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email,
+            rtc_user.synopsis,
+            rtc_user.country,
+            rtc_user.enterprise,
+            rtc_user.address,
+            rtc_user.uuid,
+            rtc_user.portrait
+        FROM
+            rtc_user
+        WHERE
+            rtc_user.nickname = #{account, jdbcType=VARCHAR}
+            AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+        UNION
+        SELECT
+            rtc_user.id,
+            rtc_user.nickname,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email,
+            rtc_user.synopsis,
+            rtc_user.country,
+            rtc_user.enterprise,
+            rtc_user.address,
+            rtc_user.uuid,
+            rtc_user.portrait
+        FROM
+            rtc_user
+        WHERE
+            rtc_user.uuid = #{account, jdbcType=VARCHAR}
+            AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+        UNION
+        SELECT
+            rtc_user.id,
+            rtc_user.nickname,
+            rtc_user.phone,
+            rtc_user.country_code countryCode,
+            rtc_user.email,
+            rtc_user.synopsis,
+            rtc_user.country,
+            rtc_user.enterprise,
+            rtc_user.address,
+            rtc_user.uuid,
+            rtc_user.portrait
+        FROM
+            rtc_user
+        WHERE
+            rtc_user.email = #{account, jdbcType=VARCHAR}
+          AND rtc_user.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+  </select>
+
+    <select id="checkFavourite" resultType="java.lang.Integer">
+        SELECT
+            rtc_user_favourite.id
+        FROM
+            rtc_user_favourite
+        WHERE
+            rtc_user_favourite.user_id = #{uuid, jdbcType=VARCHAR}
+        AND
+            rtc_user_favourite.enterprise_id = #{enterpriseId, jdbcType=VARCHAR}
+        AND
+            rtc_user_favourite.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+    </select>
+</mapper>
