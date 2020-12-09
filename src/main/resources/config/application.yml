@@ -51,9 +51,9 @@ logging:
   level:
     com.rtc.cms: info
   file:
-    path: /Users/chenhang/work/log
+#    path: /Users/chenhang/work/log
 #    max-history: 90
-#    path: /work/log
+    path: /work/cms-log
 #  config: src/main/resources/config/logback.xml
 
 
