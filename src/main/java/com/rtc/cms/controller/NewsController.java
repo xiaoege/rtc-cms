@@ -18,16 +18,16 @@ public class NewsController {
 
     @GetMapping("initNews")
     public String initNews() {
-        return "news";
+        return "news/news";
     }
 
     @GetMapping("toNewsDetail")
     public String operationNews(@RequestParam(name = "id") int id) {
-        return "newsDetail";
+        return "news/newsDetail";
     }
     @GetMapping("toNewsEdit")
     public String toNewsEdit(@RequestParam(name = "id") int id) {
-        return "newsEdit";
+        return "news/newsEdit";
     }
 
     /**

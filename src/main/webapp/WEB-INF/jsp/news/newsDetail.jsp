@@ -11,7 +11,6 @@
         .buttonclass {
             margin-top: 10px;
             margin-left: 15px;
-            margin-bottom: 15px;
         }
 
         .layui-btn-primary {
@@ -23,7 +22,34 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo">ComCheck后台管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <%--        <ul class="layui-nav layui-layout-left">--%>
+        <%--            <li class="layui-nav-item"><a href="">控制台1</a></li>--%>
+        <%--            <li class="layui-nav-item"><a href="">商品管理</a></li>--%>
+        <%--            <li class="layui-nav-item"><a href="">用户</a></li>--%>
+        <%--            <li class="layui-nav-item">--%>
+        <%--                <a href="javascript:;">其它系统</a>--%>
+        <%--                <dl class="layui-nav-child">--%>
+        <%--                    <dd><a href="">邮件管理</a></dd>--%>
+        <%--                    <dd><a href="">消息管理</a></dd>--%>
+        <%--                    <dd><a href="">授权管理</a></dd>--%>
+        <%--                </dl>--%>
+        <%--            </li>--%>
+        <%--        </ul>--%>
+        <%--        <ul class="layui-nav layui-layout-right">--%>
+        <%--            <li class="layui-nav-item">--%>
+        <%--                <a href="javascript:;">--%>
+        <%--                    喵喵--%>
+        <%--                </a>--%>
+        <%--                <dl class="layui-nav-child">--%>
+        <%--                    <dd><a href="">基本资料</a></dd>--%>
+        <%--                    <dd><a href="">安全设置</a></dd>--%>
+        <%--                </dl>--%>
+        <%--            </li>--%>
+        <%--            <li class="layui-nav-item"><a href="">退出</a></li>--%>
+        <%--        </ul>--%>
     </div>
+
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
@@ -33,11 +59,12 @@
         </div>
     </div>
 
+
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div class="buttonclass">
             <button type="button" class="layui-btn examinate">审核</button>
-            <button type="button" class="layui-btn layui-btn-normal">保存修改</button>
+            <button type="button" class="layui-btn layui-btn-normal">编辑</button>
             <button type="button" class="layui-btn layui-btn-primary">返回</button>
         </div>
         <div class="layui-form">
@@ -46,82 +73,68 @@
                     <col width="150">
                     <col>
                 </colgroup>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>内容</th>
+                </tr>
+                </thead>
+                <tbody id="news-tbody">
+                <tr>
+                    <td>id</td>
+                    <td id="news-id">
+                </tr>
                 <tr>
                     <td>examination</td>
-                    <td id="examination"></td>
+                    <td id="examination">
                 </tr>
+                <tr>
+                    <td>title</td>
+                    <td id="title">
+                </tr>
+                <tr>
+                    <td>author</td>
+                    <td id="author">
+                </tr>
+                <tr>
+                    <td>country</td>
+                    <td id="country">
+                </tr>
+                <tr>
+                    <td>source</td>
+                    <td id="source">
+                </tr>
+                <tr>
+                    <td>preview</td>
+                    <td id="preview">
+                </tr>
+                <tr>
+                    <td>description</td>
+                    <td id="description">
+                </tr>
+                <tr>
+                    <td>create_time</td>
+                    <td id="gmtCreate">
+                </tr>
+                <tr>
+                    <td>modified_time</td>
+                    <td id="gmtModify">
+                </tr>
+                <tr>
+                    <td>content</td>
+                    <td>
+                </tr>
+                </tbody>
             </table>
-            <div class="layui-form-item">
-                <label class="layui-form-label">id</label>
-                <div class="layui-input-block">
-                    <input id="news-id" type="text" autocomplete="off"
-                           class="layui-input" disabled="disabled">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">title</label>
-                <div class="layui-input-block">
-                    <input id="title" type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">author</label>
-                <div class="layui-input-block">
-                    <input id="author" type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">country</label>
-                <div class="layui-input-block">
-                    <input id="country" type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">source</label>
-                <div class="layui-input-block">
-                    <input id="source" type="text" autocomplete="off" class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">preview</label>
-                <div class="layui-input-block">
-                    <input id="preview" type="text" class="layui-input" disabled="disabled">
-                </div>
-            </div>
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">description</label>
-                <div class="layui-input-block">
-                    <textarea id="description" class="layui-textarea"></textarea>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">create_time</label>
-                <div class="layui-input-block">
-                    <input id="create_time" type="text" autocomplete="off" class="layui-input" disabled="disabled">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">modified_time</label>
-                <div class="layui-input-block">
-                    <input id="modified_time" type="text" autocomplete="off" class="layui-input" disabled="disabled">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">content</label>
-                <div class="layui-input-block" id="news-content">
-
-                </div>
-            </div>
         </div>
     </div>
-
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         © rtc
     </div>
 </div>
 <body class="layui-layout-body">
-<script src="/layui/layui.js"></script>
+<script src="/static/layui/layui.js"></script>
 
 <script>
     var newsId;
@@ -157,7 +170,8 @@
                 if (data.code == 200) {
                     let news = data.data;
                     newsId = news.id;
-
+                    $('#title').html("<p>" + news.title + "</p>")
+                    $('#news-id').html(news.id)
                     if (news.examination == 0) {
                         $('#examination').html('<span style = "color: #393d49;" > 未审核 </span>')
                     } else if (news.examination == 1) {
@@ -165,26 +179,23 @@
                     } else if (news.examination == 2) {
                         $('#examination').html('<span style = "color: #ff2f2f;" > 审核不通过 </span>')
                     }
-
-                    $("#news-id").val(news.id)
-                    $("#title").val(news.title)
-                    $('#author').val(news.author)
-                    $('#country').val(news.country)
-                    $('#source').val(news.source)
-                    $('#preview').val(news.preview)
-                    $('#description').val(news.description)
-                    $('#create_time').val(news.gmtCreate)
-                    $('#modified_time').val(news.gmtModify)
+                    $('#author').text(news.author)
+                    $('#country').text(news.country)
+                    $('#source').text(news.source)
+                    $('#preview').html('<a target="_blank" href="' + news.preview + '">' + news.preview + '</a>')
+                    $('#description').text(news.description)
+                    $('#gmtCreate').text(news.gmtCreate)
+                    $('#gmtModify').text(news.gmtModify)
                     if (news.resultList != null && news.resultList.length > 0) {
                         let resultList = news.resultList;
                         for (let i = 0; i < resultList.length; i++) {
                             let content = resultList[i]
                             if (content.type == 'content') {
-                                $('#news-content').append('<textarea type="text" autocomplete="off" class="layui-textarea news-content">' + content.data + '</textarea>')
+                                $('#news-tbody').append('<tr><td></td><td>' + content.data + '</td>')
                             } else if (content.type == 'img') {
-                                $('#news-content').append('<input type="text" disabled="disabled" class="layui-input news-content" value="' + content.url + '">')
+                                $('#news-tbody').append('<tr><td/><td><a target="_blank" href="' + content.url + '">' + content.url + '</a>' + '</td>')
                             } else {
-                                $('#news-content').append('<textarea type="text" autocomplete="off" class="layui-textarea news-content">' + content.data + '</textarea>')
+                                $('#news-tbody').append('<tr><td>other style</td><td>' + content.data + '</td>')
                             }
                         }
                     }
@@ -199,37 +210,6 @@
             }
         })
 
-        $('.layui-btn-normal').click(function () {
-            if (confirm('确认保存?')) {
-                let content = []
-                $('.news-content').each(function () {
-                    content.push($(this).val())
-                })
-                let body = {
-                    id: $("#news-id").val(),
-                    title: $("#title").val(),
-                    author: $('#author').val(),
-                    country: $('#country').val(),
-                    source: $('#source').val(),
-                    preview: $('#preview').val(),
-                    description: $('#description').val(),
-                    content: content
-                }
-                $.ajax({
-                    url: '/news/modifyNews',
-                    // data: {body: JSON.stringify(body)},
-                    data: JSON.stringify(body),
-                    type: 'POST',
-                    contentType: 'application/json',
-                    success: function (data) {
-
-                    },
-                    error: function (data) {
-
-                    }
-                })
-            }
-        });
 
         $('.examinate').click(function () {
             layui.use('layer', function () {
@@ -247,7 +227,7 @@
                             type: 'POST',
                             contentType: 'application/json',
                             success: function () {
-                                window.location.href = "/news/toNewsEdit?id=" + newsId;
+                                window.location.href = "/news/toNewsDetail?id=" + newsId;
                             },
                             error: function () {
 
@@ -266,7 +246,7 @@
                             type: 'POST',
                             contentType: 'application/json',
                             success: function () {
-                                window.location.href = "/news/toNewsEdit?id=" + newsId;
+                                window.location.href = "/news/toNewsDetail?id=" + newsId;
                             },
                             error: function () {
 
@@ -276,12 +256,16 @@
             });
         });
 
+
+        $('.layui-btn-normal').click(function () {
+            window.location.href = "/news/toNewsEdit?id=" + newsId;
+        });
+
         $('.layui-btn-primary').click(function () {
             window.location.href = "/news/initNews"
         });
-    });
-
-
+    })
+    ;
 </script>
 
 </body>
