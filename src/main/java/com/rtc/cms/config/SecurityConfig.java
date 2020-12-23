@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().formLogin()//使用 spring security 默认登录页面
                 .successHandler((request, response, authentication) -> {
-                    response.sendRedirect("/news/initNews");
+                    response.sendRedirect("/enterprise/initEnterprise");
                 });
 
     }

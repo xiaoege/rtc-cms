@@ -1,8 +1,10 @@
 package com.rtc.cms.dao.rtc;
 
+import com.rtc.cms.entity.rtc.RtcRefCountry;
 import com.rtc.cms.entity.rtc.RtcUser;
 import com.rtc.cms.vo.RtcUserVO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface RtcUserMapper {
@@ -32,4 +34,6 @@ public interface RtcUserMapper {
     RtcUserVO selectByPhoneOrAccount2RtcUserVO(String account);
 
     Integer checkFavourite(@Param("uuid") String uuid, @Param("enterpriseId") String enterpriseId);
+
+    RtcRefCountry getTable(String eType);
 }

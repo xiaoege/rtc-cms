@@ -386,4 +386,15 @@
         AND
             rtc_user_favourite.`status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
     </select>
+
+    <select id="getTable" resultType="com.rtc.cms.entity.rtc.RtcRefCountry">
+        SELECT
+               tb, idx
+        FROM
+             rtc.rtc_ref_country
+        WHERE
+           `status` = ${@com.rtc.cms.util.CommonConst@STATUS_USED}
+          AND   area = #{eType, jdbcType=VARCHAR}
+
+    </select>
 </mapper>

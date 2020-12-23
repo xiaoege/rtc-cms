@@ -9,17 +9,7 @@
     <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-    <div class="layui-logo">ComCheck后台管理</div>
-    </div>
-    <div class="layui-side layui-bg-black">
-        <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a href="/news/initNews">新闻管理</a></li>
-            </ul>
-        </div>
-    </div>
+    <%@ include file="/WEB-INF/jsp/bar.jsp" %>
 
     <script type="text/html" id="toolhead">
         <div class="layui-btn-container">
@@ -218,15 +208,15 @@
                         url: '/news/removeNews',
                         data: {id: obj.data.id},
                         type: 'POST',
-                        success: function () {
+                        success: function (data) {
                             if (data.code == 200) {
-                                layui.msg('删除成功');
+                                layer.msg('删除成功');
                             } else {
-                                layui.msg('删除失败')
+                                layer.msg('删除失败')
                             }
                         },
                         error: function () {
-                            layui.msg('请求失败')
+                            layer.msg('请求失败')
                         }
                     })
                 });

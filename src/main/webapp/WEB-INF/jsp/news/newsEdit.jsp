@@ -21,17 +21,7 @@
     </style>
 </head>
 <div class="layui-layout layui-layout-admin">
-    <div class="layui-header">
-        <div class="layui-logo">ComCheck后台管理</div>
-    </div>
-    <div class="layui-side layui-bg-black">
-        <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a href="/news/initNews">新闻管理</a></li>
-            </ul>
-        </div>
-    </div>
+    <%@ include file="/WEB-INF/jsp/bar.jsp" %>
 
     <div class="layui-body">
         <!-- 内容主体区域 -->

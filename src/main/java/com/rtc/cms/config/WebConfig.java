@@ -14,6 +14,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private WebInterceptor webInterceptor;
 
+    /**
+     * 视图
+     * @param registry
+     */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
@@ -23,6 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.viewResolver(internalResourceViewResolver);
     }
 
+    /**
+     * 自定义拦截器
+     * @param registry
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(webInterceptor)
