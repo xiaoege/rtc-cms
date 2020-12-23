@@ -92,27 +92,31 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         searchSourceBuilder.from(Math.min((pageNum - 1) * pageSize, 10000 - pageSize));
         searchSourceBuilder.sort("@timestamp", SortOrder.DESC);
 
-//        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-//        boolQueryBuilder.must();
-//        boolQueryBuilder.filter();
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.must();
+        boolQueryBuilder.filter();
 
         // 无条件搜索
         if ("".equals(name)) {
-            searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+//            searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+            boolQueryBuilder.must(QueryBuilders.matchAllQuery());
         } else {
             MatchPhraseQueryBuilder matchPhraseQueryBuilder = new MatchPhraseQueryBuilder("e_name", name);
-            searchSourceBuilder.query(matchPhraseQueryBuilder);
+//            searchSourceBuilder.query(matchPhraseQueryBuilder);
+            boolQueryBuilder.must(matchPhraseQueryBuilder);
         }
 
         RangeQueryBuilder rangeQueryBuilder = new RangeQueryBuilder("@timestamp");
         if (!StringUtils.isEmpty(startDate)) {
             rangeQueryBuilder.gte(startDate);
-            searchSourceBuilder.query(rangeQueryBuilder);
+//            searchSourceBuilder.query(rangeQueryBuilder);
         }
         if (!StringUtils.isEmpty(endDate)) {
             rangeQueryBuilder.lte(endDate);
-            searchSourceBuilder.query(rangeQueryBuilder);
+//            searchSourceBuilder.query(rangeQueryBuilder);
+//            boolQueryBuilder.filter(rangeQueryBuilder);
         }
+            boolQueryBuilder.filter(rangeQueryBuilder);
 
         SearchRequest searchRequest = null;
         if ("".equals(area)) {
@@ -120,7 +124,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         } else {
             searchRequest = new SearchRequest(area);
         }
-
+        searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
         logger.debug("searchRequest:searchType:{}, indices:{}, source:{}", searchRequest.searchType(), searchRequest.indices(), searchRequest.source());
         SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
