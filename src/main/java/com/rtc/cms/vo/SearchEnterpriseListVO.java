@@ -52,7 +52,7 @@ public class SearchEnterpriseListVO {
     private String address;
 
     @JsonAlias("@timestamp")
-    private LocalDateTime createTime;
+    private String createTime;
 
     public String geteType() {
         return eType;
@@ -118,11 +118,11 @@ public class SearchEnterpriseListVO {
         this.address = address;
     }
 
-    public LocalDateTime getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
