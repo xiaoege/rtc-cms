@@ -91,6 +91,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         // es分页查询控制在10000条数据以内
         searchSourceBuilder.from(Math.min((pageNum - 1) * pageSize, 10000 - pageSize));
         searchSourceBuilder.sort("@timestamp", SortOrder.DESC);
+        searchSourceBuilder.sort("pid", SortOrder.DESC);
 
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         boolQueryBuilder.must();

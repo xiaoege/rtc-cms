@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>ComCheck后台管理</title>
+    <title>ComChec Management</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
         .buttonclass {
@@ -26,9 +26,9 @@
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div class="buttonclass">
-            <button type="button" class="layui-btn examinate">审核</button>
-            <button type="button" class="layui-btn layui-btn-normal">保存修改</button>
-            <button type="button" class="layui-btn layui-btn-primary">返回</button>
+            <button type="button" class="layui-btn examinate">Examine</button>
+            <button type="button" class="layui-btn layui-btn-normal">Save modified</button>
+            <button type="button" class="layui-btn layui-btn-primary">Back</button>
         </div>
         <div class="layui-form">
             <table class="layui-table">
@@ -149,11 +149,11 @@
                     newsId = news.id;
 
                     if (news.examination == 0) {
-                        $('#examination').html('<span style = "color: #393d49;" > 未审核 </span>')
+                        $('#examination').html('<span style = "color: #393d49;" > Pending </span>')
                     } else if (news.examination == 1) {
-                        $('#examination').html('<span style = "color: #2fa7ff;" > 审核通过 </span>')
+                        $('#examination').html('<span style = "color: #2fa7ff;" > Approved </span>')
                     } else if (news.examination == 2) {
-                        $('#examination').html('<span style = "color: #ff2f2f;" > 审核不通过 </span>')
+                        $('#examination').html('<span style = "color: #ff2f2f;" > Disapproved </span>')
                     }
 
                     $("#news-id").val(news.id)
@@ -179,18 +179,18 @@
                         }
                     }
                 } else {
-                    alert('查看/编辑详情失败')
+                    layer.msg('Bad request.')
                     window.location.href = "/news/initNews"
                 }
             },
             error: function (data) {
-                alert('请求失败')
+                layer.msg('Bad request.')
                 window.location.href = "/news/initNews"
             }
         })
 
         $('.layui-btn-normal').click(function () {
-            if (confirm('确认保存?')) {
+            if (confirm('Are you sure to save ?')) {
                 let content = []
                 $('.news-content').each(function () {
                     content.push($(this).val())
@@ -212,10 +212,10 @@
                     type: 'POST',
                     contentType: 'application/json',
                     success: function (data) {
-
+                        layer.msg('Modify completed.')
                     },
                     error: function (data) {
-
+                        layer.msg('Modify failed.')
                     }
                 })
             }
@@ -224,7 +224,7 @@
         $('.examinate').click(function () {
             layui.use('layer', function () {
                 var layer = layui.layer;
-                layer.confirm('审核文章id：' + newsId, {icon: 3, title: '提示', btn: ['通过', '不通过', '取消']},
+                layer.confirm('Examine news id：' + newsId, {icon: 3, title: 'Examine', btn: ['Approve', 'Disapprove', 'Cancel']},
                     function (index) {
                         let operation = {
                             id: [newsId],
@@ -237,10 +237,11 @@
                             type: 'POST',
                             contentType: 'application/json',
                             success: function () {
+                                layer.msg('Approve completed.')
                                 window.location.href = "/news/toNewsEdit?id=" + newsId;
                             },
                             error: function () {
-
+                                layer.msg('Approve failed.');
                             }
                         })
 
@@ -256,10 +257,11 @@
                             type: 'POST',
                             contentType: 'application/json',
                             success: function () {
+                                layer.msg('Disapprove completed.')
                                 window.location.href = "/news/toNewsEdit?id=" + newsId;
                             },
                             error: function () {
-
+                                layer.msg('Disapprove failed.');
                             }
                         })
                     });

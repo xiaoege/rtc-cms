@@ -5,11 +5,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>ComCheck后台管理</title>
+    <title>ComChec Management</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
         .rtc-date-label {
-            width: 100px !important;
+            width: 150px !important;
+            text-align: left !important;
         }
 
         .rtc-date-div {
@@ -19,6 +20,14 @@
 
         .query-button {
             margin-left: 50px;
+        }
+
+        .layui-table-tool-self {
+            display: none !important;
+        }
+
+        .layui-laypage-cms-page{
+
         }
 
     </style>
@@ -31,12 +40,12 @@
     <script type="text/html" id="toolhead">
         <div>
             <div class="layui-input-inline">
-                <input id="data-name" type="text" required lay-verify="required" placeholder="请输入公司名"
+                <input id="data-name" type="text" required lay-verify="required" placeholder="Enterprise name"
                        autocomplete="off" class="layui-input" value="">
             </div>
             <div class="layui-input-inline">
                 <select id="data-nation" lay-filter="nation">
-                    <option></option>
+                    <option value="">Nation</option>
                     <option value="America">America</option>
                     <option value="China">China</option>
                     <option value="Vietnam">Vietnam</option>
@@ -46,38 +55,38 @@
             </div>
             <div class="layui-input-inline">
                 <select id="data-area" lay-verify="">
-                    <option></option>
+                    <option value="">Area</option>
                 </select>
             </div>
             <div class="layui-input-inline query-button">
-                <button class="layui-btn layui-btn-sm" onclick="getEnterprise()">查询</button>
-                <button class="layui-btn layui-btn-sm" onclick="clearQuery()">重置</button>
+                <button class="layui-btn layui-btn-sm" onclick="getEnterprise()">Query</button>
+                <button class="layui-btn layui-btn-sm" onclick="clearQuery()">Reset</button>
             </div>
         </div>
         <div class="layui-inline rtc-date-div">
-            <label class="layui-form-label rtc-date-label">创建时间</label>
+            <label class="layui-form-label rtc-date-label">Create time</label>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" id="data-start-date" autocomplete="off" placeholder="开始时间">
+                <input type="text" class="layui-input" id="data-start-date" autocomplete="off" placeholder="start time">
             </div>
             <div class="layui-inline">
                 -
             </div>
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" id="data-end-date" autocomplete="off" placeholder="结束时间">
+                <input type="text" class="layui-input" id="data-end-date" autocomplete="off" placeholder="end time">
             </div>
         </div>
         <div>
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">删除</button>
-                <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">Delete</button>
+                <%--                <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>--%>
             </div>
         </div>
     </script>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">view</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">edit</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">delete</a>
     </script>
 
     <div class="layui-body">
@@ -111,12 +120,14 @@
         let endDate;
         laydate.render({
             elem: '#data-start-date' //指定元素
-            , trigger : 'click'
+            , trigger: 'click'
+            , lang: 'en'
         });
 
         laydate.render({
             elem: '#data-end-date'
-            , trigger : 'click'
+            , trigger: 'click'
+            , lang: 'en'
         });
     });
 
@@ -132,14 +143,18 @@
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'pid', title: 'ID', width: 100}
-                , {field: 'eName', title: '公司', width: 250}
-                , {field: 'address', title: '地址', width: 200}
-                , {field: 'nation', title: '国家', width: 140}
-                , {field: 'eType', title: '地区', width: 140}
-                , {field: 'createTime', title: '创建时间', width: 200}
-                , {field: 'operation', title: '操作', toolbar: '#barDemo', width: 180}
+                , {field: 'eName', title: 'Name', width: 250}
+                , {field: 'address', title: 'Address', width: 200}
+                , {field: 'nation', title: 'Nation', width: 140}
+                , {field: 'eType', title: 'Area', width: 140}
+                , {field: 'createTime', title: 'Create time', width: 200}
+                , {field: 'operation', title: 'Operation', toolbar: '#barDemo', width: 180}
             ]]
-            , page: true
+            , page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit',],
+                groups: 5,
+                theme: 'cms-page'
+            }
         });
 
         //头工具栏事件
@@ -159,7 +174,11 @@
                         companyArray.push(company)
                     }
                     if (companyArray.length != 0) {
-                        layer.confirm('删除' + data.length + '个公司', {icon: 3, title: '删除', btn: ['删除', '取消']},
+                        layer.confirm('Delete ' + data.length + ' enterprise', {
+                                icon: 3,
+                                title: 'Delete',
+                                btn: ['Yes', 'No']
+                            },
                             function (index) {
                                 $.ajax({
                                     url: '/enterprise/removeEnterpriseList',
@@ -172,14 +191,16 @@
                                         table.reload('test', {
                                             url: '/enterprise/listEnterprise'
                                             , where: queryData
-                                            , done:function(){
+                                            , done: function () {
                                                 layui.laydate.render({
                                                     elem: '#data-start-date'
-                                                    ,trigger : 'click'
+                                                    , trigger: 'click'
+                                                    , lang: 'en'
                                                 });
                                                 layui.laydate.render({
                                                     elem: '#data-end-date'
-                                                    ,trigger : 'click'
+                                                    , trigger: 'click'
+                                                    , lang: 'en'
                                                 });
                                             }
                                         });
@@ -187,15 +208,15 @@
                                     },
                                     error: function () {
                                         layer.close(index);
-                                        layer.msg('请求失败')
+                                        layer.msg('Bad request.')
                                     }
                                 })
                             });
                     }
                     break;
-                case 'getCheckLength':
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
+                // case 'getCheckLength':
+                //     layer.msg('选中了：' + data.length + ' 个');
+                //     break;
             }
             ;
         });
@@ -209,7 +230,7 @@
             } else if (layEvent === 'edit') {
                 // window.location.href = "/news/toNewsEdit?id=" + obj.data.pid;
             } else if (layEvent === 'del') {
-                layer.confirm('删除公司id: ' + obj.data.pid, {icon: 3}, function (index) {
+                layer.confirm('Delete enterprise id: ' + obj.data.pid, {icon: 3, btn: ['Yes', 'No']}, function (index) {
                     // obj.del(); //删除对应行（tr）的DOM结构
                     $.ajax({
                         url: '/enterprise/removeEnterprise',
@@ -218,31 +239,33 @@
                         success: function (data) {
                             if (data.code == 200) {
                                 layer.close(index);
-                                layer.msg('删除成功');
+                                layer.msg('Delete completed.');
                                 let queryData = getQueryData();
                                 table.reload('test', {
                                     url: '/enterprise/listEnterprise'
                                     , where: queryData
-                                    , done:function(){
+                                    , done: function () {
                                         layui.laydate.render({
                                             elem: '#data-start-date'
-                                            ,trigger : 'click'
+                                            , trigger: 'click'
+                                            , lang: 'en'
                                         });
                                         layui.laydate.render({
                                             elem: '#data-end-date'
-                                            ,trigger : 'click'
+                                            , trigger: 'click'
+                                            , lang: 'en'
                                         });
                                     }
                                 });
                                 resetQueryData(queryData)
                             } else {
                                 layer.close(index);
-                                layer.msg('删除失败')
+                                layer.msg('Delete failed.')
                             }
                         },
                         error: function () {
                             layer.close(index);
-                            layer.msg('请求失败')
+                            layer.msg('Bad request.')
                         }
                     })
                 });
@@ -265,7 +288,10 @@
                     }
                 }
             }
-            form.render()
+            if ($('#data-area option').size() == 0) {
+                $('#data-area').append('<option value="">Area</option>')
+            }
+            form.render();
         });
 
 
@@ -284,14 +310,16 @@
                 page: {
                     curr: 1
                 },
-                done:function(){
+                done: function () {
                     layui.laydate.render({
                         elem: '#data-start-date'
-                        ,trigger : 'click'
+                        , trigger: 'click'
+                        , lang: 'en'
                     });
                     layui.laydate.render({
                         elem: '#data-end-date'
-                        ,trigger : 'click'
+                        , trigger: 'click'
+                        , lang: 'en'
                     });
                 }
             });
@@ -333,6 +361,7 @@
                 }
             }
         }
+
 
         $('#data-area').val(data.area)
     }

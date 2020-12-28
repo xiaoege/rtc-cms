@@ -5,24 +5,28 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>ComCheck后台管理</title>
+    <title>ComChec Management</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
+    <style>
+        .layui-table-tool-self {
+            display: none !important;
+        }
+    </style>
 </head>
 <div class="layui-layout layui-layout-admin">
     <%@ include file="/WEB-INF/jsp/bar.jsp" %>
 
     <script type="text/html" id="toolhead">
         <div class="layui-btn-container">
-            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">审核</button>
-            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">Examine</button>
         </div>
     </script>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">view</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">edit</a>
         <%--        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="examination">审核</a>--%>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">delete</a>
     </script>
 
     <div class="layui-body">
@@ -60,15 +64,18 @@
             , cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'id', title: 'ID', width: 100}
-                , {field: 'title', title: '标题'}
-                , {field: 'source', title: '新闻来源', width: 120}
-                , {field: 'country', title: '国家'}
-                , {field: 'examination', title: '审核状态', width: 100, templet: '#examination'}
-                , {field: 'gmtCreate', title: '创建时间', width: 170}
-                , {field: 'gmtModify', title: '修改时间', width: 170}
-                , {field: 'operation', title: '操作', toolbar: '#barDemo'}
+                , {field: 'title', title: 'Title'}
+                , {field: 'source', title: 'Source', width: 120}
+                , {field: 'country', title: 'Country'}
+                , {field: 'examination', title: 'Status', width: 100, templet: '#examination'}
+                , {field: 'gmtCreate', title: 'Create time', width: 170}
+                , {field: 'gmtModify', title: 'Update time', width: 170}
+                , {field: 'operation', title: 'Operation', toolbar: '#barDemo'}
             ]]
-            , page: true
+            , page: {
+                layout: ['prev', 'page', 'next', 'skip', 'count', 'limit',],
+                groups: 5
+            }
         });
 
         //头工具栏事件
@@ -82,7 +89,11 @@
                         idArray.push(data[i].id)
                     }
                     if (idArray.length != 0) {
-                        layer.confirm('审核' + idArray.length + '个新闻', {icon: 3, title: '审核', btn: ['通过', '不通过', '取消']},
+                        layer.confirm('Examine ' + idArray.length + ' news', {
+                                icon: 3,
+                                title: 'Examine',
+                                btn: ['Approve', 'Disapprove', 'Cancel']
+                            },
                             function (index) {
                                 let operation = {
                                     id: idArray,
@@ -104,7 +115,7 @@
                                         layer.close(index);
                                     },
                                     error: function () {
-                                        layer.msg('请求失败')
+                                        layer.msg('Bad request.')
                                         layer.close(index);
                                     }
                                 })
@@ -128,16 +139,16 @@
                                         layer.close(index);
                                     },
                                     error: function () {
-                                        layer.msg('请求失败')
+                                        layer.msg('Bad request.')
                                         layer.close(index);
                                     }
                                 })
                             });
                     }
                     break;
-                case 'getCheckLength':
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
+                // case 'getCheckLength':
+                //     layer.msg('选中了：' + data.length + ' 个');
+                //     break;
             }
             ;
         });
@@ -200,7 +211,7 @@
                         })
                     });
             } else if (layEvent === 'del') {
-                layer.confirm('删除文章id: ' + obj.data.id, {icon: 2}, function (index) {
+                layer.confirm('Delete news id: ' + obj.data.id, {icon: 2, btn: ['Yes', 'No']}, function (index) {
                     obj.del(); //删除对应行（tr）的DOM结构
                     layer.close(index);
                     //向服务端发送删除指令
@@ -210,13 +221,13 @@
                         type: 'POST',
                         success: function (data) {
                             if (data.code == 200) {
-                                layer.msg('删除成功');
+                                layer.msg('Delete completed.');
                             } else {
-                                layer.msg('删除失败')
+                                layer.msg('Delete failed.');
                             }
                         },
                         error: function () {
-                            layer.msg('请求失败')
+                            layer.msg('Bad request.');
                         }
                     })
                 });
@@ -229,11 +240,11 @@
 
 <script type="text/html" id="examination">
     {{#  if(d.examination == 0){ }}
-    <span style="color: #393d49;">未审核</span>
+    <span style="color: #393d49;">Pending</span>
     {{#  } else if(d.examination == 1){ }}
-    <span style="color: #2fa7ff;">审核通过</span>
+    <span style="color: #2fa7ff;">Approved</span>
     {{#  } else if(d.examination == 2){ }}
-    <span style="color: #ff2f2f;">审核不通过</span>
+    <span style="color: #ff2f2f;">Disapproved</span>
     {{#  } }}
 </script>
 </body>

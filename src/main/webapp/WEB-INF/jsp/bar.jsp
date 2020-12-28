@@ -5,15 +5,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>ComCheck后台管理</title>
+    <title>ComChec Management</title>
     <link rel="stylesheet" href="/layui/css/layui.css">
 </head>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">ComCheck后台管理</div>
+        <div class="layui-logo">ComChec Management</div>
         <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
             <li class="layui-nav-item" >
-                <a href="/logout" onclick="if (confirm('确认退出?')==false)return false;">退出</a>
+                <a href="/logout" onclick="if (confirm('确认退出?')==false)return false;">Sign out</a>
             </li>
         </ul>
     </div>
@@ -21,8 +21,8 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                <li class="layui-nav-item"><a id="bar-enterprise" href="/enterprise/initEnterprise">企业管理</a></li>
-                <li class="layui-nav-item"><a id="bar-news" href="/news/initNews">新闻管理</a></li>
+                <li class="layui-nav-item"><a id="bar-enterprise" href="/enterprise/initEnterprise">Enterprise</a></li>
+                <li class="layui-nav-item"><a id="bar-news" href="/news/initNews">News</a></li>
             </ul>
         </div>
     </div>
