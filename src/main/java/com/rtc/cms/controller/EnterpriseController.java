@@ -16,7 +16,7 @@ public class EnterpriseController {
     @Autowired
     private EnterpriseService enterpriseService;
 
-    @GetMapping("initEnterprise")
+    @GetMapping("/initEnterprise")
     public String initEnterprise() {
         return "enterprise/enterprise";
     }
