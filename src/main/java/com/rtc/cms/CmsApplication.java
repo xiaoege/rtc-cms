@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @MapperScan("com.rtc.cms.dao")
 @SpringBootApplication
+@EnableWebMvc
 public class CmsApplication {
 
     public static void main(String[] args) {
