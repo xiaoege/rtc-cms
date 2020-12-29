@@ -21,9 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
-        internalResourceViewResolver.setPrefix("/WEB-INF/jsp/");
+        internalResourceViewResolver.setPrefix("/META-INF/resources/");
         internalResourceViewResolver.setSuffix(".jsp");
-//        registry.jsp("/WEB-INF/jsp/", ".jsp");
+//        registry.jsp("/META-INF/resources/", ".jsp");
         registry.viewResolver(internalResourceViewResolver);
     }
 

@@ -21,7 +21,7 @@
     </style>
 </head>
 <div class="layui-layout layui-layout-admin">
-    <%@ include file="/WEB-INF/jsp/bar.jsp" %>
+    <%@ include file="/META-INF/resources/bar.jsp" %>
 
     <div class="layui-body">
         <!-- 内容主体区域 -->

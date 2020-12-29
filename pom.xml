@@ -152,16 +152,49 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
                 <version>1.4.0</version>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- version一一定要使用1.4.2.RELEASE版本 其他都不可以 -->
+                <version>1.4.2.RELEASE</version>
+                <configuration>
+                    <!-- 设定启动类 -->
+                    <mainClass>com.rtc.cms.CmsApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
+        <resources>
+            <resource>
+                <!-- JSP包打包到资源里 -->
+                <directory>${basedir}/src/main/webapp</directory>
+                <!-- 指定resources插件处理哪个目录下的资源文件 -->
+                <targetPath>META-INF/resources</targetPath>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+                <excludes>
+                    <exclude>None</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
+
 
 </project>

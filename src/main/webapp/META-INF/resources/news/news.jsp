@@ -14,7 +14,7 @@
     </style>
 </head>
 <div class="layui-layout layui-layout-admin">
-    <%@ include file="/WEB-INF/jsp/bar.jsp" %>
+    <%@ include file="/META-INF/resources/bar.jsp" %>
 
     <script type="text/html" id="toolhead">
         <div class="layui-btn-container">

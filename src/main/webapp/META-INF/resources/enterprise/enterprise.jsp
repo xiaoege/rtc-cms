@@ -36,7 +36,7 @@
 <body class="layui-layout-body">
 
 <div class="layui-layout layui-layout-admin">
-    <%@ include file="/WEB-INF/jsp/bar.jsp" %>
+    <%@ include file="/META-INF/resources/bar.jsp" %>
     <script type="text/html" id="toolhead">
         <div>
             <div class="layui-input-inline">
